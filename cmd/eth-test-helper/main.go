@@ -7,14 +7,16 @@ import (
 )
 
 const (
-	ActionInit  = "init"
-	ActionClean = "clean"
+	ActionInit       = "init"
+	ActionClean      = "clean"
+	ActionMakeLoader = "make-loader"
 )
 
 func main() {
 
 	s := helper.SettingsConstructor()
 	var action string
+	var loaderPath string
 
 	fs := flag.NewFlagSet("Flags ", flag.ExitOnError)
 	fs.StringVar(&s.GenesisPath, "genesis-path", "genesis.json", "Path to genesis")
@@ -23,6 +25,7 @@ func main() {
 	fs.StringVar(&s.NetworkId, "networkid", "58342", "Id of network")
 	fs.StringVar(&s.RPCPort, "rpcport", "8545", "Port for Ethereum rpc access")
 	fs.StringVar(&s.RPCAddr, "rpcaddr", "127.0.0.1", "Host for rpc running")
+	fs.StringVar(&loaderPath, "file", "Contract.sol", "Contract file path")
 	fs.StringVar(&action, "action", ActionInit, "Action")
 
 	fs.Parse(os.Args[1:])
@@ -34,6 +37,9 @@ func main() {
 		s.Run()
 	case ActionClean:
 		s.Clear()
+	case ActionMakeLoader:
+		l := helper.LoaderConstructor(loaderPath)
+		l.Make()
 	}
 
 }
