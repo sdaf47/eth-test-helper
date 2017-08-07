@@ -10,6 +10,7 @@ type settings struct {
 	GethParams params
 }
 
+// constructor for private type 'settings'
 func SettingsConstructor() settings {
 	s := settings{}
 	s.GethParams = params{}
@@ -17,6 +18,7 @@ func SettingsConstructor() settings {
 	return s
 }
 
+// remove private chain
 func (s *settings) Clear() {
 	execCommand("rm", []string{
 		"rm",
@@ -26,6 +28,7 @@ func (s *settings) Clear() {
 	})
 }
 
+// create new private chain in directory
 func (s *settings) Start() {
 	syscall.Mkdir(s.ChainName, 0777)
 

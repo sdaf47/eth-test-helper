@@ -7,6 +7,7 @@ import (
 	"syscall"
 )
 
+// temporary
 func execCommand(command string, args []string) {
 	env := os.Environ()
 
