@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	ActionStart = "start"
-	ActionClear = "clear"
+	ActionInit  = "init"
+	ActionClean = "clean"
 )
 
 func main() {
@@ -23,16 +23,16 @@ func main() {
 	fs.StringVar(&s.NetworkId, "networkid", "58342", "Id of network")
 	fs.StringVar(&s.RPCPort, "rpcport", "8545", "Port for Ethereum rpc access")
 	fs.StringVar(&s.RPCAddr, "rpcaddr", "127.0.0.1", "Host for rpc running")
-	fs.StringVar(&action, "action", ActionStart, "Action")
+	fs.StringVar(&action, "action", ActionInit, "Action")
 
 	fs.Parse(os.Args[1:])
 
 	switch action {
-	case ActionStart:
+	case ActionInit:
 		s.Clear()
 		s.Init()
 		s.Run()
-	case ActionClear:
+	case ActionClean:
 		s.Clear()
 	}
 

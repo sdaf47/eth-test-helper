@@ -47,6 +47,8 @@ func (s *settings) Init() {
 
 // start private chain
 func (s *settings) Run() {
+	// TODO how to run?
+
 	cmd := exec.Command(
 		"geth",
 		"--port",
@@ -67,12 +69,5 @@ func (s *settings) Run() {
 		"\"eth,net,web3\"",
 	)
 
-	rc, err := cmd.StdoutPipe()
-	cmd.Run()
-	if err != nil {
-		panic(err)
-	}
-	var res []byte
-	rc.Read(res)
-	fmt.Println(string(res))
+	fmt.Println(cmd.Args)
 }
