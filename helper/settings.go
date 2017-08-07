@@ -2,9 +2,6 @@ package helper
 
 import (
 	"syscall"
-	"log"
-	"os/exec"
-	"os"
 )
 
 type settings struct {
@@ -39,18 +36,4 @@ func (s *settings) Start() {
 		"init",
 		s.GenesisPath,
 	})
-}
-
-func execCommand(command string, args []string) {
-	env := os.Environ()
-
-	binary, err := exec.LookPath(command)
-	if err != nil {
-		log.Print(err)
-	}
-
-	err = syscall.Exec(binary, args, env)
-	if err != nil {
-		log.Print(err)
-	}
 }
