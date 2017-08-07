@@ -2,14 +2,13 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"os"
 	"github.com/sdaf47/eth-test-helper/helper"
 )
 
 func main() {
 
-	s := &helper.SettingsConstructor()
+	s := helper.SettingsConstructor()
 
 	fs := flag.NewFlagSet("Flags ", flag.ExitOnError)
 	fs.StringVar(&s.GenesisPath, "genesis-path", "genesis.json", "Path to genesis")
@@ -21,5 +20,6 @@ func main() {
 
 	fs.Parse(os.Args[1:])
 
-	fmt.Println(s)
+	s.Start()
+
 }
