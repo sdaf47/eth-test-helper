@@ -1,42 +1,78 @@
 package helper
 
 import (
+	"fmt"
+	"os/exec"
 	"syscall"
 )
 
 type settings struct {
 	GenesisPath string
-	ChainName string
-	GethParams params
+	ChainName   string
+	Port        string
+	NetworkId   string
+	RPCPort     string
+	RPCAddr     string
 }
 
 // constructor for private type 'settings'
 func SettingsConstructor() settings {
 	s := settings{}
-	s.GethParams = params{}
 
 	return s
 }
 
 // remove private chain
 func (s *settings) Clear() {
-	execCommand("rm", []string{
+	execCommand(
 		"rm",
 		"-r",
 		"-f",
 		s.ChainName,
-	})
+	)
 }
 
 // create new private chain in directory
-func (s *settings) Start() {
+func (s *settings) Init() {
 	syscall.Mkdir(s.ChainName, 0777)
 
-	execCommand("geth", []string{
+	execCommand(
 		"geth",
 		"--datadir",
 		s.ChainName,
 		"init",
 		s.GenesisPath,
-	})
+	)
+}
+
+// start private chain
+func (s *settings) Run() {
+	cmd := exec.Command(
+		"geth",
+		"--port",
+		s.Port,
+		"--networkid",
+		s.NetworkId,
+		"--nodiscover",
+		"--datadir="+s.ChainName,
+		"--maxpeers=0",
+		"--rpc",
+		"-rpcport",
+		s.RPCPort,
+		"--rpcaddr",
+		s.RPCAddr,
+		"--rpccorsdomain",
+		"\"http://127.0.0.1:8000\"",
+		"--rpcapi",
+		"\"eth,net,web3\"",
+	)
+
+	rc, err := cmd.StdoutPipe()
+	cmd.Run()
+	if err != nil {
+		panic(err)
+	}
+	var res []byte
+	rc.Read(res)
+	fmt.Println(string(res))
 }

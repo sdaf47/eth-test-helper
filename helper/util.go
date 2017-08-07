@@ -1,24 +1,44 @@
 package helper
 
 import (
-	"os"
+	"bytes"
+	"fmt"
 	"os/exec"
-	"log"
-	"syscall"
 )
 
-// temporary
-func execCommand(command string, args []string) {
-	env := os.Environ()
-
-	binary, err := exec.LookPath(command)
+func execCommand(command string, args ...string) (err error) {
+	cmd := exec.Command(
+		command,
+		args...,
+	)
+	fmt.Println(cmd.Args)
+	var outb, errb bytes.Buffer
+	cmd.Stdout = &outb
+	cmd.Stderr = &errb
+	err = cmd.Run()
 	if err != nil {
-		log.Print(err)
+		return err
+	}
+	for {
+		op, err := outb.ReadString('\n')
+		if op == "" {
+			break
+		}
+		if err != nil {
+			return err
+		}
+		fmt.Print(op)
+	}
+	for {
+		op, err := errb.ReadString('\n')
+		if op == "" {
+			break
+		}
+		if err != nil {
+			return err
+		}
+		fmt.Print(op)
 	}
 
-	err = syscall.Exec(binary, args, env)
-	if err != nil {
-		log.Print(err)
-	}
+	return nil
 }
-
