@@ -9,6 +9,7 @@ all: fmt build
 build: clean get fmt vet
 	go build -o build/${PROGRAMM} ./cmd/${PROGRAMM}/main.go
 	chmod +x build/${PROGRAMM}
+	cp build/${PROGRAMM} ~/bin/${PROGRAMM}
 
 clean:
 	rm -rf ./build/*
