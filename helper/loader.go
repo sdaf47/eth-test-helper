@@ -37,7 +37,8 @@ func LoaderConstructor(path string) loader {
 	var l loader
 	l.Path = path
 	// TODO rewrite this shit
-	l.Name = regexp.MustCompile("([a-zA-Z0-9]+)").FindString(path)
+	g := regexp.MustCompile("([a-zA-Z0-9]+)[.]sol").FindStringSubmatch(path)
+	l.Name = g[1]
 
 	return l
 }
@@ -47,8 +48,11 @@ func (l *loader) Make() {
 	l.makeAbi()
 
 	// TODO and this f**ng shit eto prosto zhest` kto ee pustil
-	binName := l.Name + "_sol_" + l.Name + ".bin"
-	abiName := l.Name + "_sol_" + l.Name + ".abi"
+
+	tmpName := string(regexp.MustCompile("[./]").ReplaceAll([]byte(l.Path), []byte("_")))
+
+	binName := tmpName + "_" + l.Name + ".bin"
+	abiName := tmpName + "_" + l.Name + ".abi"
 	var binContent []byte
 	var abiContent []byte
 	var err error
