@@ -13,7 +13,7 @@ var binary = "<BINARY>";
 
 var contract = web3.eth.contract(compiled);
 
-var <NAME> = contract.new(_greeting,{from:web3.eth.accounts[0], data: binary, gas: 300000}, function(e, contract){
+var <NAME> = contract.new({from:web3.eth.accounts[0], data: binary, gas: 300000}, function(e, contract){
     if(!e) {
 
         if(!contract.address) {
@@ -24,7 +24,10 @@ var <NAME> = contract.new(_greeting,{from:web3.eth.accounts[0], data: binary, ga
             console.log(contract);
         }
 
+    } else {
+    	console.log(e);
     }
+
 });
 `
 

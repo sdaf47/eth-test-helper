@@ -7,9 +7,8 @@ import (
 )
 
 const (
-	ActionInit       = "init"
-	ActionClean      = "clean"
-	ActionMakeLoader = "make-loader"
+	ActionInit  = "init"
+	ActionClean = "clean"
 )
 
 func main() {
@@ -34,12 +33,8 @@ func main() {
 	case ActionInit:
 		s.Clear()
 		s.Init()
-		s.Run()
 	case ActionClean:
 		s.Clear()
-	case ActionMakeLoader:
-		l := helper.LoaderConstructor(loaderPath)
-		l.Make()
 	}
 
 }
